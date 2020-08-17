@@ -5,10 +5,11 @@ from dotenv import load_dotenv
 import requests
 import telegram
 
+
 def send_request(url, payload):
-        AUTH_HEADERS = {'Authorization':DVMN_TOKEN}
-        response = requests.get(url, headers=AUTH_HEADERS, params=payload)
-        return response.json()
+    AUTH_HEADERS = {'Authorization': DVMN_TOKEN}
+    response = requests.get(url, headers=AUTH_HEADERS, params=payload)
+    return response.json()
 
 
 if __name__ == "__main__":
@@ -16,13 +17,13 @@ if __name__ == "__main__":
     load_dotenv()
     DVMN_TOKEN = os.getenv('DVMN_TOKEN')
     bot = telegram.Bot(token=os.getenv("TG_TOKEN"))
-    payload = {"timestamp":''}
+    payload = {}
     chat_id = os.getenv("CHAT_ID")
     while True:
         try:
             api_mess = send_request(url, payload)
         except requests.exceptions.ReadTimeout:
-            print ('Ошибка на сервере DevMan.')
+            print('Ошибка на сервере DevMan.')
         except ConnectionError:
             print('Проверьте соединение с интернетом.')
         if api_mess['status'] == 'timeout':
