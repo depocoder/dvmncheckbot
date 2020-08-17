@@ -1,9 +1,9 @@
 import os
+from urllib.parse import urljoin
 from time import sleep
 from dotenv import load_dotenv
 import requests
 import telegram
-
 
 def send_request(url, payload):
         AUTH_HEADERS = {'Authorization':DVMN_TOKEN}
@@ -30,8 +30,12 @@ if __name__ == "__main__":
         elif api_mess['status'] == 'found':
             payload['timestamp'] = api_mess['last_attempt_timestamp']
             important_messages = api_mess["new_attempts"][0]
+            link = urljoin('https://dvmn.org/', important_messages['lesson_url'])
+            if important_messages['is_negative']:
+                status_mode = 'К сожалению в работе нашлись ошибки.'
+            else:
+                status_mode = 'Преподователю все понравилось, можете проходить следующий модуль.'
             text_mess = f'''У вас проверили работу <<{important_messages['lesson_title']}>>
-            
-            '''
+            {status_mode}. Ссылка на модуль {link}'''
             bot.send_message(chat_id=chat_id, text=text_mess)
         sleep(1)
