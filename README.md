@@ -17,7 +17,7 @@ pip install -r requirements.txt
 **Пример**  
 ```
 TG_TOKEN=1374455275:AAHUcCsVfH_hDeFM-3icahluF6ajIWALVXw
-DVMN_TOKEN=TOKEN 3505d87e2ed932f3e4a18f9a9ede592d53d9e888
+DVMN_TOKEN=3505d87e2ed932f3e4a18f9a9ede592d53d9e888
 CHAT_ID=107781750
 ```
 
