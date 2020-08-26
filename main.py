@@ -15,7 +15,7 @@ def send_request(url, payload):
 if __name__ == "__main__":
     url = 'https://dvmn.org/api/long_polling/'
     load_dotenv()
-    DVMN_TOKEN = "TOKEN", os.getenv('DVMN_TOKEN')
+    DVMN_TOKEN = "TOKEN " + os.getenv('DVMN_TOKEN')
     bot = telegram.Bot(token=os.getenv("TG_TOKEN"))
     payload = {}
     chat_id = os.getenv("CHAT_ID")
