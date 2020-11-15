@@ -21,16 +21,16 @@ if __name__ == "__main__":
     tg_chat_id = os.getenv("TG_CHAT_ID")
     while True:
         try:
-            api_mess = send_request(url, payload)
+            api_message = send_request(url, payload)
         except requests.exceptions.ReadTimeout:
             print('Ошибка на сервере DevMan.')
         except ConnectionError:
             print('Проверьте соединение с интернетом.')
-        if api_mess['status'] == 'timeout':
-            payload['timestamp'] = api_mess['timestamp_to_request']
-        elif api_mess['status'] == 'found':
-            payload['timestamp'] = api_mess['last_attempt_timestamp']
-            important_messages = api_mess["new_attempts"][0]
+        if api_message['status'] == 'timeout':
+            payload['timestamp'] = api_message['timestamp_to_request']
+        elif api_message['status'] == 'found':
+            payload['timestamp'] = api_message['last_attempt_timestamp']
+            important_messages = api_message["new_attempts"][0]
             link = urljoin(
                 'https://dvmn.org/', important_messages['lesson_url'])
             if important_messages['is_negative']:
