@@ -1,13 +1,14 @@
 import os
-from urllib.parse import urljoin
 from time import sleep
+from urllib.parse import urljoin
 from dotenv import load_dotenv
 import requests
 import telegram
 
 
 def send_request(url, payload):
-    AUTH_HEADERS = {'Authorization': DVMN_TOKEN}
+    dvmn_token = os.getenv('DVMN_TOKEN')
+    AUTH_HEADERS = {'Authorization': "TOKEN " + dvmn_token}
     response = requests.get(url, headers=AUTH_HEADERS, params=payload)
     return response.json()
 
@@ -15,10 +16,9 @@ def send_request(url, payload):
 if __name__ == "__main__":
     url = 'https://dvmn.org/api/long_polling/'
     load_dotenv()
-    DVMN_TOKEN = "TOKEN " + os.getenv('DVMN_TOKEN')
     bot = telegram.Bot(token=os.getenv("TG_TOKEN"))
     payload = {}
-    chat_id = os.getenv("CHAT_ID")
+    tg_chat_id = os.getenv("TG_CHAT_ID")
     while True:
         try:
             api_mess = send_request(url, payload)
@@ -42,5 +42,5 @@ if __name__ == "__main__":
                 f'У вас проверили работу'
                 f'<<{important_messages["lesson_title"]}>>\n\n'
                 f'{status_mode} Ссылка на модуль {link}')
-            bot.send_message(chat_id=chat_id, text=text_mess)
+            bot.send_message(chat_id=tg_chat_id, text=text_mess)
         sleep(1)
