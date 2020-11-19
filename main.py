@@ -9,7 +9,8 @@ import telegram
 def send_request(url, payload):
     dvmn_token = os.getenv('DVMN_TOKEN')
     AUTH_HEADERS = {'Authorization': "TOKEN " + dvmn_token}
-    response = requests.get(url, headers=AUTH_HEADERS, params=payload)
+    response = requests.get(
+        url, headers=AUTH_HEADERS, params=payload)
     response.raise_for_status()
     return response.json()
 
@@ -24,9 +25,10 @@ if __name__ == "__main__":
         try:
             api_message = send_request(url, payload)
         except requests.exceptions.ReadTimeout:
-            print('Ошибка на сервере DevMan.')
+            pass
         except requests.exceptions.ConnectionError:
             print('Проверьте соединение с интернетом.')
+            continue
         if api_message['status'] == 'timeout':
             payload['timestamp'] = api_message['timestamp_to_request']
         elif api_message['status'] == 'found':
@@ -40,7 +42,7 @@ if __name__ == "__main__":
                 status_mode = '''Преподователю все понравилось,
                 можете проходить следующий модуль.'''
             text_mess = (
-                f'У вас проверили работу'
+                f'У вас проверили работу '
                 f'<<{important_message["lesson_title"]}>>\n\n'
                 f'{status_mode} Ссылка на модуль {link}')
             bot.send_message(chat_id=tg_chat_id, text=text_mess)
