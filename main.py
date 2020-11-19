@@ -10,6 +10,7 @@ def send_request(url, payload):
     dvmn_token = os.getenv('DVMN_TOKEN')
     AUTH_HEADERS = {'Authorization': "TOKEN " + dvmn_token}
     response = requests.get(url, headers=AUTH_HEADERS, params=payload)
+    response.raise_for_status()
     return response.json()
 
 
@@ -24,23 +25,23 @@ if __name__ == "__main__":
             api_message = send_request(url, payload)
         except requests.exceptions.ReadTimeout:
             print('Ошибка на сервере DevMan.')
-        except ConnectionError:
+        except requests.exceptions.ConnectionError:
             print('Проверьте соединение с интернетом.')
         if api_message['status'] == 'timeout':
             payload['timestamp'] = api_message['timestamp_to_request']
         elif api_message['status'] == 'found':
             payload['timestamp'] = api_message['last_attempt_timestamp']
-            important_messages = api_message["new_attempts"][0]
+            important_message = api_message["new_attempts"][0]
             link = urljoin(
-                'https://dvmn.org/', important_messages['lesson_url'])
-            if important_messages['is_negative']:
+                'https://dvmn.org/', important_message['lesson_url'])
+            if important_message['is_negative']:
                 status_mode = 'К сожалению в работе нашлись ошибки.'
             else:
                 status_mode = '''Преподователю все понравилось,
                 можете проходить следующий модуль.'''
             text_mess = (
                 f'У вас проверили работу'
-                f'<<{important_messages["lesson_title"]}>>\n\n'
+                f'<<{important_message["lesson_title"]}>>\n\n'
                 f'{status_mode} Ссылка на модуль {link}')
             bot.send_message(chat_id=tg_chat_id, text=text_mess)
         sleep(1)
