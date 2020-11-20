@@ -46,4 +46,3 @@ if __name__ == "__main__":
                 f'<<{important_message["lesson_title"]}>>\n\n'
                 f'{status_mode} Ссылка на модуль {link}')
             bot.send_message(chat_id=tg_chat_id, text=text_mess)
-        sleep(1)
