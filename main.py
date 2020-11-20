@@ -8,9 +8,9 @@ import telegram
 
 def send_request(url, payload):
     dvmn_token = os.getenv('DVMN_TOKEN')
-    AUTH_HEADERS = {'Authorization': "TOKEN " + dvmn_token}
+    auth_headers = {'Authorization': "TOKEN " + dvmn_token}
     response = requests.get(
-        url, headers=AUTH_HEADERS, params=payload)
+        url, headers=auth_headers, params=payload)
     response.raise_for_status()
     return response.json()
 
