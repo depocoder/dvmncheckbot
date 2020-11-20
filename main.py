@@ -1,5 +1,5 @@
 import os
-from time import sleep
+import textwrap
 from urllib.parse import urljoin
 from dotenv import load_dotenv
 import requests
@@ -42,7 +42,9 @@ if __name__ == "__main__":
                 status_mode = '''Преподователю все понравилось,
                 можете проходить следующий модуль.'''
             text_mess = (
-                f'У вас проверили работу '
-                f'<<{important_message["lesson_title"]}>>\n\n'
-                f'{status_mode} Ссылка на модуль {link}')
-            bot.send_message(chat_id=tg_chat_id, text=text_mess)
+                f'''\
+                У вас проверили работу.
+                <<{important_message["lesson_title"]}>>.
+                '{status_mode} Ссылка на модуль - {link}''')
+            bot.send_message(
+                chat_id=tg_chat_id, text=textwrap.dedent(text_mess))
