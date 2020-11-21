@@ -1,4 +1,5 @@
 import os
+import time
 import textwrap
 from urllib.parse import urljoin
 from dotenv import load_dotenv
@@ -28,6 +29,7 @@ if __name__ == "__main__":
             pass
         except requests.exceptions.ConnectionError:
             print('Проверьте соединение с интернетом.')
+            time.sleep(10)
             continue
         if api_message['status'] == 'timeout':
             payload['timestamp'] = api_message['timestamp_to_request']
