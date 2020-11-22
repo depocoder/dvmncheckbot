@@ -27,7 +27,6 @@ if __name__ == "__main__":
             api_message = send_request(url, payload)
         except requests.exceptions.ReadTimeout:
             print('Ошибка на сервере Devman')
-            time.sleep(10)
             continue
         except requests.exceptions.ConnectionError:
             print('Проверьте соединение с интернетом.')
