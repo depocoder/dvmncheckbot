@@ -1,4 +1,5 @@
 import os
+import time
 import textwrap
 from urllib.parse import urljoin
 from dotenv import load_dotenv
@@ -10,7 +11,7 @@ def send_request(url, payload):
     dvmn_token = os.getenv('DVMN_TOKEN')
     auth_headers = {'Authorization': "TOKEN " + dvmn_token}
     response = requests.get(
-        url, headers=auth_headers, params=payload)
+        url, headers=auth_headers, timeout=91, params=payload)
     response.raise_for_status()
     return response.json()
 
@@ -25,9 +26,11 @@ if __name__ == "__main__":
         try:
             api_message = send_request(url, payload)
         except requests.exceptions.ReadTimeout:
-            pass
+            print('Ошибка на сервере Devman')
+            continue
         except requests.exceptions.ConnectionError:
             print('Проверьте соединение с интернетом.')
+            time.sleep(10)
             continue
         if api_message['status'] == 'timeout':
             payload['timestamp'] = api_message['timestamp_to_request']
