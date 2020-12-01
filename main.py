@@ -8,6 +8,12 @@ import requests
 import telegram
 
 
+class MyLogsHandler(logging.Handler):
+    def send_nessage(self, record, bot, tg_chat_id):
+        bot.send_message(
+                chat_id=tg_chat_id, text=record)
+
+
 def send_request(url, payload):
     dvmn_token = os.getenv('DVMN_TOKEN')
     auth_headers = {'Authorization': "TOKEN " + dvmn_token}
@@ -18,7 +24,10 @@ def send_request(url, payload):
 
 
 if __name__ == "__main__":
-    logging.warning('Бот запущен')
+    logger = logging.getLogger("Название логера")
+    logger.setLevel(logging.INFO)
+    logger.addHandler(MyLogsHandler())
+    logger.info("Я новый логер!")
     url = 'https://dvmn.org/api/long_polling/'
     load_dotenv()
     bot = telegram.Bot(token=os.getenv("TG_TOKEN"))
