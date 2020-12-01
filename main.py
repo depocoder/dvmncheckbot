@@ -1,5 +1,6 @@
 import os
 import time
+import logging
 import textwrap
 from urllib.parse import urljoin
 from dotenv import load_dotenv
@@ -17,6 +18,7 @@ def send_request(url, payload):
 
 
 if __name__ == "__main__":
+    logging.warning('Бот запущен')
     url = 'https://dvmn.org/api/long_polling/'
     load_dotenv()
     bot = telegram.Bot(token=os.getenv("TG_TOKEN"))
@@ -48,6 +50,6 @@ if __name__ == "__main__":
                 f'''\
                 У вас проверили работу.
                 <<{important_message["lesson_title"]}>>.
-                '{status_mode} Ссылка на модуль - {link}''')
+                {status_mode} Ссылка на модуль - {link}''')
             bot.send_message(
                 chat_id=tg_chat_id, text=textwrap.dedent(text_mess))
