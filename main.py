@@ -8,12 +8,6 @@ import requests
 import telegram
 
 
-class MyLogsHandler(logging.Handler):
-    def send_nessage(self, record, bot, tg_chat_id):
-        bot.send_message(
-                chat_id=tg_chat_id, text=record)
-
-
 def send_request(url, payload):
     dvmn_token = os.getenv('DVMN_TOKEN')
     auth_headers = {'Authorization': "TOKEN " + dvmn_token}
@@ -24,25 +18,37 @@ def send_request(url, payload):
 
 
 if __name__ == "__main__":
+
+    load_dotenv()
+    bot = telegram.Bot(token=os.getenv("TG_TOKEN"))
+    tg_chat_id = os.getenv("TG_CHAT_ID")
+
+    class MyLogsHandler(logging.Handler):
+        def emit(self, record):
+            log_entry = self.format(record)
+            bot.send_message(
+                chat_id=tg_chat_id, text=log_entry)
+    url = 'https://dvmn.org/api/long_polling/'
+    payload = {}
     logger = logging.getLogger("Название логера")
     logger.setLevel(logging.INFO)
     logger.addHandler(MyLogsHandler())
-    logger.info("Я новый логер!")
-    url = 'https://dvmn.org/api/long_polling/'
-    load_dotenv()
-    bot = telegram.Bot(token=os.getenv("TG_TOKEN"))
-    payload = {}
-    tg_chat_id = os.getenv("TG_CHAT_ID")
+    logger.info("Бот запущен!")
     while True:
         try:
             api_message = send_request(url, payload)
         except requests.exceptions.ReadTimeout:
-            print('Ошибка на сервере Devman')
+            logger.info('Ошибка на сервере Devman')
             continue
         except requests.exceptions.ConnectionError:
-            print('Проверьте соединение с интернетом.')
+            logger.info('Проверьте соединение с интернетом.')
             time.sleep(10)
             continue
+        except Exception as e:
+            logger.info('Бот упал с ошибкой:')
+            logger.info(e)
+            logging.info('Засыпаю на 1 минуту.')
+            time.sleep(60)
         if api_message['status'] == 'timeout':
             payload['timestamp'] = api_message['timestamp_to_request']
         elif api_message['status'] == 'found':
@@ -60,5 +66,4 @@ if __name__ == "__main__":
                 У вас проверили работу.
                 <<{important_message["lesson_title"]}>>.
                 {status_mode} Ссылка на модуль - {link}''')
-            bot.send_message(
-                chat_id=tg_chat_id, text=textwrap.dedent(text_mess))
+            logger.info(textwrap.dedent(text_mess))
