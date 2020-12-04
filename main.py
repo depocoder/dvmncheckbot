@@ -47,7 +47,7 @@ if __name__ == "__main__":
         except Exception as e:
             logger.info('Бот упал с ошибкой:')
             logger.info(e)
-            logging.info('Засыпаю на 1 минуту.')
+            logger.info('Засыпаю на 1 минуту.')
             time.sleep(60)
         if api_message['status'] == 'timeout':
             payload['timestamp'] = api_message['timestamp_to_request']
