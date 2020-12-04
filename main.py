@@ -8,6 +8,9 @@ import requests
 import telegram
 
 
+logger = logging.getLogger("Название логера")
+
+
 def send_request(url, payload):
     dvmn_token = os.getenv('DVMN_TOKEN')
     auth_headers = {'Authorization': "TOKEN " + dvmn_token}
@@ -30,7 +33,6 @@ if __name__ == "__main__":
                 chat_id=tg_chat_id, text=log_entry)
     url = 'https://dvmn.org/api/long_polling/'
     payload = {}
-    logger = logging.getLogger("Название логера")
     logger.setLevel(logging.INFO)
     logger.addHandler(MyLogsHandler())
     logger.info("Бот запущен!")
