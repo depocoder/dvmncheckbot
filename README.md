@@ -4,10 +4,8 @@
 Этот проект позволяет отслеживать проверку работ на сайте [dvmn.org](dvmn.org) через [телеграм](https://telegram.org/) бота.    
    
 ## Подготовка к запуску.  
-Уставновить Python 3+.
-```
-sudo apt-get install python3
-```
+Уставновить [Python 3+](https://www.python.org/downloads/)     
+
 Установить, создать и активировать виртуальное окружение.
 ```
 pip3 install virtualenv
