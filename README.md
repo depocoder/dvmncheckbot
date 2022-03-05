@@ -21,6 +21,8 @@ TG_CHAT_ID=107781750
 ## Подготовка к запуску через docker(Linux).
 Установить [Docker Engine on Debian](https://docs.docker.com/engine/install/debian/)
 
+Запустить сборку образа
+
 ```bash
 docker build -t dvmncheckbot .
 ```
