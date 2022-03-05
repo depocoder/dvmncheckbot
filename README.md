@@ -2,9 +2,21 @@
 
 ## Описание проекта.   
 Этот проект позволяет отслеживать проверку работ на сайте [dvmn.org](dvmn.org) через [телеграм](https://telegram.org/) бота.    
-   
-## Подготовка к запуску.  
-Уставновить [Python 3+](https://www.python.org/downloads/)     
+
+## Подготовка к запуску через docker(Linux).
+Установить [Docker Engine on Debian](https://docs.docker.com/engine/install/debian/)
+
+```bash
+docker build -t dvmncheckbot .
+```
+
+## Запуск проекта через docker.  
+```
+docker run dvmncheckbot
+```
+
+## Подготовка к запуску без докера(Linux).  
+Установить [Python 3+](https://www.python.org/downloads/)     
 
 Установить, создать и активировать виртуальное окружение.
 ```
