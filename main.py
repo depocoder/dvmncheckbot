@@ -40,7 +40,6 @@ if __name__ == "__main__":
         try:
             api_message = send_request(url, payload, dvmn_token)
         except requests.exceptions.ReadTimeout:
-            logger.info('Ошибка на сервере Devman')
             continue
         except requests.exceptions.ConnectionError:
             logger.info('Проверьте соединение с интернетом.')
