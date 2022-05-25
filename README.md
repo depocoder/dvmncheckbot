@@ -29,7 +29,7 @@ docker build -t dvmncheckbot .
 
 ## Запуск проекта через docker.  
 ```
-docker run dvmncheckbot
+docker run --env-file ./.env dvmncheckbot
 ```
 
 ## Подготовка к запуску без докера(Linux).  
